@@ -1,13 +1,13 @@
 ---
 title: "Map of The MBTA Transit System in Massachusetts"
 author: "Andrew Disher"
-date: "2023-12-24"
+date: "2023-12-23"
 output: 
   html_document:
     theme: cerulean
-      toc: true
-      toc_depth: 3
-      toc_float: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -116,47 +116,53 @@ line_weight <- 2
 
 ```{r}
 myMap <- leaflet(options = leafletOptions(minZoom = 9, maxZoom = 20)) %>% 
-  addMapPane(name = "custom_layers", zIndex = 410) %>% 
-  addMapPane(name = "rapid_transit_stops", zIndex = 415) %>% 
-  addMapPane(name = "maplabels", zIndex = 420) %>%
+  # addMapPane(name = "custom_layers", zIndex = 410) %>% 
+  # addMapPane(name = "rapid_transit_stops", zIndex = 415) %>% 
+  # addMapPane(name = "maplabels", zIndex = 420) %>%
   addProviderTiles(providers$CartoDB.VoyagerNoLabels) %>%
-  addProviderTiles(providers$CartoDB.VoyagerOnlyLabels, 
-                   options = leafletOptions(pane = "maplabels")) %>% 
-  addPolylines(data = commuter_rail_routes, weight = line_weight, color = ~paste0("#", route_color),
-               options = leafletOptions(pane = "custom_layers")) %>% 
-  addPolylines(data = bus_routes, weight = line_weight, color = ~paste0("#", route_color),
-               options = leafletOptions(pane = "custom_layers")) %>% 
-  addPolylines(data = ferry_routes, weight = line_weight, color = "#008EAA", dashArray = "2 6",
-               options = leafletOptions(pane = "custom_layers")) %>% 
-  addPolylines(data = other_routes, weight = line_weight, color = "#00304d",
-               options = leafletOptions(pane = "custom_layers")) %>% 
-  addPolylines(data = rapid_transit_routes, weight = line_weight, color = ~paste0("#", route_color),
-               options = leafletOptions(pane = "custom_layers")) %>% 
+  addProviderTiles(providers$CartoDB.VoyagerOnlyLabels
+                   # ,options = leafletOptions(pane = "maplabels")
+                   ) %>% 
+  addPolylines(data = commuter_rail_routes, weight = line_weight, color = ~paste0("#", route_color)
+               # ,options = leafletOptions(pane = "custom_layers")
+               ) %>% 
+  addPolylines(data = bus_routes, weight = line_weight, color = ~paste0("#", route_color)
+               # ,options = leafletOptions(pane = "custom_layers")
+               ) %>% 
+  addPolylines(data = ferry_routes, weight = line_weight, color = "#008EAA", dashArray = "2 6"
+               # ,options = leafletOptions(pane = "custom_layers")
+               ) %>% 
+  addPolylines(data = other_routes, weight = line_weight, color = "#00304d"
+               # ,options = leafletOptions(pane = "custom_layers")
+               ) %>% 
+  addPolylines(data = rapid_transit_routes, weight = line_weight, color = ~paste0("#", route_color)
+               # ,options = leafletOptions(pane = "custom_layers")
+               ) %>% 
   addMarkers(data = rapid_transit_stops, icon = mbta_icons$rapidT, group = "rapid_transit_stops",
-             options = leafletOptions(pane = "rapid_transit_stops"),
+             # options = leafletOptions(pane = "rapid_transit_stops"),
              label = glue("<strong>{rapid_transit_stops$stop_name}</strong> <br>
                           <strong>Address:</strong> {rapid_transit_stops$stop_address} <br>
                           <strong>Municipality:</strong> {rapid_transit_stops$municipality}") %>% lapply(HTML),
              labelOptions = labelOptions(
                style = c(label_style,
                          "border-color" = "black"))) %>% 
-  addCircleMarkers(data = ferry_stops, radius = 3, color = "#008EAA", opacity = 1, fillOpacity = 1, 
-             options = leafletOptions(pane = "custom_layers"),
-             label = glue("<strong>{ferry_stops$stop_name}</strong> <br>
-                          <strong>Municipality:</strong> {ferry_stops$municipality}") %>% lapply(HTML),
-             labelOptions = labelOptions(
-               style = c(label_style,
-                         "border-color" = "#008EAA"))) %>% 
   addCircleMarkers(data = commuter_rail_stations, radius = 3, color = "#80276C", opacity = 1, fillOpacity = 1, 
-             options = leafletOptions(pane = "custom_layers"),
+             # options = leafletOptions(pane = "custom_layers"),
              label = glue("<strong>{commuter_rail_stations$stop_name}</strong> <br>
                           <strong>Platform:</strong> {commuter_rail_stations$platform_name} <br>
                           <strong>Municipality:</strong> {commuter_rail_stations$municipality}") %>% lapply(HTML),
              labelOptions = labelOptions(
                style = c(label_style, 
                          "border-color" = "#80276C"))) %>% 
+  addCircleMarkers(data = ferry_stops, radius = 3, color = "#008EAA", opacity = 1, fillOpacity = 1, 
+             # options = leafletOptions(pane = "custom_layers"),
+             label = glue("<strong>{ferry_stops$stop_name}</strong> <br>
+                          <strong>Municipality:</strong> {ferry_stops$municipality}") %>% lapply(HTML),
+             labelOptions = labelOptions(
+               style = c(label_style,
+                         "border-color" = "#008EAA"))) %>% 
   addCircleMarkers(data = other_stops, radius = 3, color = "#00304d", opacity = 1, fillOpacity = 1, 
-                   options = leafletOptions(pane = "custom_layers"),
+                   # options = leafletOptions(pane = "custom_layers"),
                    label = glue("<strong>{other_stops$stop_name}</strong> <br>
                                 <strong>Municipality:</strong> {other_stops$municipality}") %>% lapply(HTML),
                    labelOptions = labelOptions(
@@ -171,3 +177,5 @@ myMap <- leaflet(options = leafletOptions(minZoom = 9, maxZoom = 20)) %>%
 ```{r, out.width='100%'}
 myMap
 ```
+
+
